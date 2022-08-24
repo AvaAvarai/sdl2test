@@ -1,53 +1,63 @@
 #include <SDL2/SDL.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
+
+#define PROG   "sdl2test: humble begginings"
+#define WIDTH  1280
+#define HEIGHT 760
+#define XSTART 100
+#define YSTART 100
+
+#define BKGND  "./img/grumpy-cat.bmp"
+
+int _exit( char *msg, const char *err, SDL_Window *win, SDL_Renderer *ren )
+{
+	fprintf(stderr, msg, err);
+	if (win != NULL)
+		SDL_DestroyWindow(win);
+	if (ren != NULL)
+		SDL_DestroyRenderer(ren);
+	return EXIT_FAILURE;
+} 
 
 int main()
 {
-	if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
-		fprintf(stderr, "SDL_Init Error: %s\n", SDL_GetError());
-		return EXIT_FAILURE;
-	}
+	if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
+		_exit("SDL_Init Error", SDL_GetError(), NULL, NULL);
 
-	SDL_Window* win = SDL_CreateWindow("Hello World!", 100, 100, 620, 387, SDL_WINDOW_SHOWN);
-	if (win == NULL) {
-		fprintf(stderr, "SDL_CreateWindow Error: %s\n", SDL_GetError());
-		return EXIT_FAILURE;
-	}
+	SDL_Window* win = SDL_CreateWindow(PROG, XSTART, YSTART, WIDTH, HEIGHT, SDL_WINDOW_SHOWN);
+	if (win == NULL)
+		_exit("SDL_CreateWindow Error", SDL_GetError(), NULL, NULL);
 
 	SDL_Renderer* ren = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-	if (ren == NULL) {
-		fprintf(stderr, "SDL_CreateRenderer Error: %s\n", SDL_GetError());
-		SDL_DestroyWindow(win);
-		SDL_Quit();
-		return EXIT_FAILURE;
-	}
+	if (ren == NULL)
+		_exit("SDL_CreateRenderer Error", SDL_GetError(), win, NULL); 
 
-	SDL_Surface* bmp = SDL_LoadBMP("./img/grumpy-cat.bmp");
-	if (bmp == NULL) {
-		fprintf(stderr, "SDL_LoadBMP Error: %s\n", SDL_GetError());
-		SDL_DestroyRenderer(ren);
-		SDL_DestroyWindow(win);
-		SDL_Quit();
-		return EXIT_FAILURE;
-	}
+	SDL_Surface* bmp = SDL_LoadBMP(BKGND);
+	// TODO: move bmp load to a function 
+	if (bmp == NULL)
+		_exit("SDL_LoadBMP Error", SDL_GetError(), win, ren);
 
 	SDL_Texture* tex = SDL_CreateTextureFromSurface(ren, bmp);
-	if (tex == NULL) {
-		fprintf(stderr, "SDL_CreateTextureFromSurface Error: %s\n", SDL_GetError());
-		SDL_FreeSurface(bmp);
-		SDL_DestroyRenderer(ren);
-		SDL_DestroyWindow(win);
-		SDL_Quit();
-		return EXIT_FAILURE;
-	}
+	if (tex == NULL)
+		_exit("SDL_CreateTextureFromSurface Error", SDL_GetError(), win, ren); 
+	
 	SDL_FreeSurface(bmp);
 
-	for (int i = 0; i < 200; i++) {
+	bool quit = false;
+	SDL_Event event;
+
+	while ( !quit )
+	{
+		SDL_WaitEvent(&event);
+		if ( event.type == SDL_QUIT )
+		{
+			quit = true;
+		}
 		SDL_RenderClear(ren);
 		SDL_RenderCopy(ren, tex, NULL, NULL);
 		SDL_RenderPresent(ren);
-		SDL_Delay(100);
 	}
 
 	SDL_DestroyTexture(tex);
