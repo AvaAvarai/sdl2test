@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-#define PROG   "sdl2test: humble begginings"
+#define PROG   "sdl2test: humble beginings"
 #define WIDTH  1280
 #define HEIGHT 760
 #define XSTART 100
@@ -11,7 +11,7 @@
 
 #define BKGND  "./img/grumpy-cat.bmp"
 
-int _exit( char *msg, const char *err, SDL_Window *win, SDL_Renderer *ren )
+int _exit( char* msg, const char* err, SDL_Window* win, SDL_Renderer* ren )
 {
 	fprintf(stderr, msg, err);
 	if (win != NULL)
@@ -19,7 +19,21 @@ int _exit( char *msg, const char *err, SDL_Window *win, SDL_Renderer *ren )
 	if (ren != NULL)
 		SDL_DestroyRenderer(ren);
 	return EXIT_FAILURE;
-} 
+}
+
+SDL_Texture* _bmploadtex( char* path, SDL_Window* win, SDL_Renderer* ren )
+{
+	SDL_Surface* bmp = SDL_LoadBMP(path);
+	if (bmp == NULL)
+		_exit("SDL_LoadBMP Error", SDL_GetError(), win, ren);
+
+	SDL_Texture* tex = SDL_CreateTextureFromSurface(ren, bmp);
+	if (tex == NULL)
+		_exit("SDL_CreateTextureFromScratch Error", SDL_GetError(), win, ren);
+
+	SDL_FreeSurface(bmp);
+	return tex;
+}
 
 int main()
 {
@@ -34,16 +48,7 @@ int main()
 	if (ren == NULL)
 		_exit("SDL_CreateRenderer Error", SDL_GetError(), win, NULL); 
 
-	SDL_Surface* bmp = SDL_LoadBMP(BKGND);
-	// TODO: move bmp load to a function 
-	if (bmp == NULL)
-		_exit("SDL_LoadBMP Error", SDL_GetError(), win, ren);
-
-	SDL_Texture* tex = SDL_CreateTextureFromSurface(ren, bmp);
-	if (tex == NULL)
-		_exit("SDL_CreateTextureFromSurface Error", SDL_GetError(), win, ren); 
-	
-	SDL_FreeSurface(bmp);
+	SDL_Texture* tex = _bmploadtex(BKGND, win, ren);
 
 	bool quit = false;
 	SDL_Event event;
