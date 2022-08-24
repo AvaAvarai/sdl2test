@@ -1,6 +1,8 @@
 CC=egcc
 OBJS=main.c
+SRCFOLDER=src/
 PROG=sdl2test
+CFLAGS=-std=c99
 
-all: $(OBJS)
-	$(CC) $(OBJS) `sdl2-config --cflags --libs` -o $(PROG)
+all: $(SRCFOLDER)$(OBJS)
+	$(CC) $(SRCFOLDER)$(OBJS) $(CFLAGS) `sdl2-config --cflags --libs` -o $(PROG)

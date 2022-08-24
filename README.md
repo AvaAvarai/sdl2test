@@ -5,6 +5,7 @@ code/images borrowed from: github.com/xyproto/sdl2-examples/c99
 
 project goals:
 + develop a 2d sdl2 rpg game
++ stick to C99 facilities  
 + deploy to itch.io html5 with emscripten/webasm
 + deploy to windows with mingw compiler
 + statically link to limit dependency issues
