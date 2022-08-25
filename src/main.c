@@ -10,6 +10,7 @@
 #define YSTART 100
 
 #define BKGND  "./img/grumpy-cat.bmp"
+#define RENFLAGS SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC
 
 int _exit( char* msg, const char* err, SDL_Window* win, SDL_Renderer* ren )
 {
@@ -44,7 +45,7 @@ int main()
 	if (win == NULL)
 		_exit("SDL_CreateWindow Error", SDL_GetError(), NULL, NULL);
 
-	SDL_Renderer* ren = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+	SDL_Renderer* ren = SDL_CreateRenderer(win, -1, RENFLAGS);
 	if (ren == NULL)
 		_exit("SDL_CreateRenderer Error", SDL_GetError(), win, NULL); 
 
