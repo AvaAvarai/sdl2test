@@ -8,16 +8,9 @@
 
 int main()
 {
-	if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
-		_exit("SDL_Init Error", SDL_GetError(), NULL, NULL);
-
-	SDL_Window* win = SDL_CreateWindow(PROG, XSTART, YSTART, WIDTH, HEIGHT, SDL_WINDOW_SHOWN);
-	if (win == NULL)
-		_exit("SDL_CreateWindow Error", SDL_GetError(), NULL, NULL);
-
-	SDL_Renderer* ren = SDL_CreateRenderer(win, -1, FLAGS);
-	if (ren == NULL)
-		_exit("SDL_CreateRenderer Error", SDL_GetError(), win, NULL); 
+	struct Gfx handlers = _init();
+	SDL_Window* win = handlers.win;
+	SDL_Renderer* ren = handlers.ren;
 
 	SDL_Texture* tex = _bmploadtex(BKGND, win, ren);
 

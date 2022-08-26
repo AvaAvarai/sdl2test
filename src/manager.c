@@ -1,6 +1,23 @@
 #include "manager.h"
 
-int _exit( char* msg, const char* err, SDL_Window* win, SDL_Renderer* ren )
+struct Gfx _init()
+{
+	if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
+		_exit("SDL_Init Error", SDL_GetError(), NULL, NULL);
+
+	SDL_Window *win = SDL_CreateWindow(PROG, XSTART, YSTART, WIDTH, HEIGHT, SDL_WINDOW_SHOWN);
+	if (win == NULL)
+		_exit("SDL_CreateWindow Error", SDL_GetError(), NULL, NULL);
+
+	SDL_Renderer *ren = SDL_CreateRenderer(win, -1, FLAGS);
+	if (ren == NULL)
+		_exit("SDL_CreateRenderer Error", SDL_GetError(), win, NULL);
+
+	struct Gfx out = {win, ren};
+	return out;
+}
+
+void _exit( char* msg, const char* err, SDL_Window* win, SDL_Renderer* ren )
 {
 	fprintf(stderr, err);
 	printf("%n");

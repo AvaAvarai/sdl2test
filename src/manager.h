@@ -11,7 +11,14 @@
 #define BKGND   "./img/grumpy-cat.bmp"
 #define FLAGS  SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC
 
-int _exit( char* msg, const char* err, SDL_Window* win, SDL_Renderer* ren );
+struct Gfx
+{
+	SDL_Window *win;
+	SDL_Renderer *ren;
+};
+
+struct Gfx _init();
+void _exit( char* msg, const char* err, SDL_Window* win, SDL_Renderer* ren );
 SDL_Texture* _bmploadtex( char* path, SDL_Window* win, SDL_Renderer* ren );
 
 #endif /* MANAGER_H */
