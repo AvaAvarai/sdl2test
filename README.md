@@ -1,9 +1,9 @@
 # sdl2test
 
-Prototype poject space for building a sdl2 application in, no binaries included.
+Prototype poject space for building a sdl2 application in, no binaries included.  
 Original test code & images borrowed from: github.com/xyproto/sdl2-examples/c99
 
-## Project Goals:
+## Project Goals
 
 + develop a 2d rpg game: top down view, orthogonal tilemap, keyboard controls, maybe controller bindings
 + stick to C99 facilities
