@@ -13,7 +13,3 @@ Original test code & images borrowed from: github.com/xyproto/sdl2-examples/c99
 	+ mac:     https://github.com/tpoechtrager/osxcross (don't have a means to test at this time)
 	+ linux:   gcc? clang? plenty of options. (can test)
 	+ bsd:     egcc (can test)
-
-## LICENSE
-[BSD-3 License](https://choosealicense.com/licenses/bsd-3-clause/)
-
